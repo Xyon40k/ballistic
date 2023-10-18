@@ -27,6 +27,7 @@ boolean shifted = false;
 int textsize = 18;
 PopUp shifttextn;
 PopUp shifttexty;
+boolean paused = false;
 
 Wrapper wdefaultmass;
 Wrapper wmode;
@@ -133,6 +134,10 @@ void keyPressed() {
         ps.resetTrails();
       }
       break;
+      
+      case 'p':
+      paused = !paused;
+      break;
     }
   }
 }
@@ -145,7 +150,7 @@ void setup() {
   frameRate(fps);
   ps = new ParticleSystem();
   tb = new TextBuffer();
-  tiptext = new Text("Click:  Places an object of mode type at the mouse cursor\nMouse wheel:  Changes the selected mass\nC:  Clear all objects of mode type\nJ:  Toggles attraction between particles\nB:  Toggles screen boundary for particles\nM:  Toggles a gravity center of selected mass at the mouse cursor\nS:  Cycles between modes\nT:  Toggles trails for particles", new PVector(0, -height*0.4));
+  tiptext = new Text("Click:  Places an object of mode type at the mouse cursor\nMouse wheel:  Changes the selected mass\nC:  Clear all objects of mode type\nJ:  Toggles attraction between particles\nB:  Toggles screen boundary for particles\nM:  Toggles a gravity center of selected mass at the mouse cursor\nS:  Cycles between modes\nT:  Toggles trails for particles", new PVector(0, -height*0.4), new PVector(CENTER, TOP));
   shifttexty = new PopUp("SHIFT is now active", new PVector(width*0.5, -height*0.5+textsize), fps*2, new PVector(RIGHT, TOP));
   shifttextn = new PopUp("SHIFT is now inactive", new PVector(width*0.5, -height*0.5+textsize), fps*2, new PVector(RIGHT, TOP));
   tb.addText("Press Q for tooltips", new PVector(-width*0.5, -height*0.5+textsize), new PVector(LEFT, TOP));
@@ -165,10 +170,12 @@ void draw() {
   fill(#FFFFFF);
   ps.display();
   tb.display();
-  
+    
   // updating
-  wdefaultmass.set(floor(defaultmass*10)/10.0);
-  wmode.set(modenames[mode]);
-  ps.update();
-  tb.update();
+  if(!paused) {
+    wdefaultmass.set(floor(defaultmass*10)/10.0);
+    wmode.set(modenames[mode]);
+    ps.update();
+    tb.update();
+  }
 }

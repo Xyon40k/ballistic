@@ -111,13 +111,13 @@ class Particle {
   
   PVector resultingAcc(ArrayList<GravCenter> gravs) {
     PVector res = resultingForce(gravs);
-    res.div(mass);
+    res.div(abs(mass));
     return res;
   }
   
   PVector resultingAcc(ArrayList<GravCenter> gravs, ArrayList<Particle> particles) {
     PVector res = resultingForce(gravs, particles);
-    res.div(mass);
+    res.div(abs(mass));
     return res;
   }
   
