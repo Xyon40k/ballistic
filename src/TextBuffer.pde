@@ -1,83 +1,133 @@
+import java.util.Iterator;
+
 class TextBuffer {
-  ArrayList<PopUp> list;
+  ArrayList<PopUp> plist;
+  ArrayList<Text> tlist;
+  ArrayList<DynamicText> dlist;
   
   TextBuffer() {
-    list = new ArrayList<PopUp>();
+    plist = new ArrayList<PopUp>();
+    tlist = new ArrayList<Text>();
+    dlist = new ArrayList<DynamicText>();
   }
   
-  TextBuffer(PopUp p) {
-    list = new ArrayList<PopUp>();
-    list.add(p);
+  PopUp post(String text, PVector pos, int timeleft) {
+    PopUp p = new PopUp(text, pos, timeleft);
+    plist.add(p);
+    return p;
   }
   
-  void post(String text, PVector pos, int timeleft) {
-    list.add(new PopUp(text, pos, timeleft));
+  PopUp post(String text, PVector pos, int timeleft, PVector alignment) {
+    PopUp p = new PopUp(text, pos, timeleft, alignment);
+    plist.add(p);
+    return p;
   }
   
-  void post(String text, PVector pos, int timeleft, PVector alignment) {
-    list.add(new PopUp(text, pos, timeleft, alignment));
+  PopUp post(String text, PVector pos, int timeleft, PVector alignment, color c) {
+    PopUp p = new PopUp(text, pos, timeleft, alignment, c);
+    plist.add(p);
+    return p;
   }
   
-  void post(String text, PVector pos, int timeleft, PVector alignment, color c) {
-    list.add(new PopUp(text, pos, timeleft, alignment, c));
+  PopUp post(PopUp p) {
+    plist.add(p);
+    return p;
+  }
+  
+  Text addText(String text, PVector pos) {
+    Text t = new Text(text, pos);
+    tlist.add(t);
+    return t;
+  }
+  
+  Text addText(String text, PVector pos, PVector alignment) {
+    Text t = new Text(text, pos, alignment);
+    tlist.add(t);
+    return t;
+  }
+  
+  Text addText(String text, PVector pos, PVector alignment, color c) {
+    Text t = new Text(text, pos, alignment, c);
+    tlist.add(t);
+    return t;
+  }
+  
+  Text addText(Text t) {
+    tlist.add(t);
+    return t;
+  }
+  
+  DynamicText addDynamicText(String text, PVector pos, Wrapper w) {
+    DynamicText t = new DynamicText(text, pos, w);
+    dlist.add(t);
+    return t;
+  }
+  
+  DynamicText addDynamicText(String text, PVector pos, Wrapper w, PVector alignment) {
+    DynamicText t = new DynamicText(text, pos, w, alignment);
+    dlist.add(t);
+    return t;
+  }
+  
+  DynamicText addDynamicText(String text, PVector pos, Wrapper w, PVector alignment, color c) {
+    DynamicText t = new DynamicText(text, pos, w, alignment, c);
+    dlist.add(t);
+    return t;
+  }
+  
+  DynamicText addDynamicText(DynamicText t) {
+    dlist.add(t);
+    return t;
+  }
+  
+  boolean remove(Text t) {
+    try {
+      tlist.remove(t);
+      return true;
+    } catch(Exception e) {
+      return false;
+    }
+  }
+  
+  boolean remove(PopUp p) {
+    try {
+      plist.remove(p);
+      return true;
+    } catch(Exception e) {
+      return false;
+    }
+  }
+  
+  boolean remove(DynamicText d) {
+    try {
+      dlist.remove(d);
+      return true;
+    } catch(Exception e) {
+      return false;
+    }
   }
   
   void update() {
-    PopUp t;
-    for(int i = 0; i < list.size(); i++) {
-      t = list.get(i);
-      if(t.update()) {
-        list.remove(i);
+    PopUp p;
+    for(Iterator<PopUp> i = plist.iterator(); i.hasNext();) {
+      p = i.next();
+      if(p.update()) {
+        i.remove();
       }
     }
   }
   
   void display() {
-    for(int i = 0; i < list.size(); i++) {
-      list.get(i).display();
-    }
-  }
-  
-  class PopUp {
-    String text;
-    color c;
-    int timeleft;
-    PVector pos;
-    PVector alignment;
-  
-    PopUp(String text, PVector pos, int timeleft) {
-      this.pos = pos;
-      this.text = text;
-      this.timeleft = timeleft;
-      c = #FFFFFF;
-      alignment = new PVector(CENTER, CENTER);
+    for(PopUp p : plist) {
+      p.display();
     }
     
-    PopUp(String text, PVector pos, int timeleft, PVector alignment) {
-      this.pos = pos;
-      this.text = text;
-      this.timeleft = timeleft;
-      c = #FFFFFF;
-      this.alignment = alignment;
-    }
-  
-    PopUp(String text, PVector pos, int timeleft, PVector alignment, color c) {
-      this.pos = pos;
-      this.text = text;
-      this.timeleft = timeleft;
-      this.c = c;
-      this.alignment = alignment;
+    for(Text t : tlist) {
+      t.display();
     }
     
-    void display() {
-      fill(c);
-      textAlign(int(alignment.x), int(alignment.y));
-      text(text, pos.x, pos.y);
-    }
-    
-    boolean update() {
-      timeleft--;
-      return timeleft == 0;
+    for(DynamicText d : dlist) {
+      d.display();
     }
   }
 }

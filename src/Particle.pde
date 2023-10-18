@@ -93,8 +93,8 @@ class Particle {
   
   PVector resultingForce(ArrayList<GravCenter> gravs) {
     PVector res = new PVector();
-    for(int i = 0; i < gravs.size(); i++) {
-      res.add(gravs.get(i).influence(this));
+    for(GravCenter gc : gravs) {
+      res.add(gc.influence(this));
     }
     
     return res;
@@ -102,8 +102,8 @@ class Particle {
   
   PVector resultingForce(ArrayList<GravCenter> gravs, ArrayList<Particle> particles) {
     PVector res = resultingForce(gravs);
-    for(int i = 0; i < particles.size(); i++) {
-      res.add(particles.get(i).influence(this));
+    for(Particle p : particles) {
+      res.add(p.influence(this));
     }
     
     return res;
@@ -122,6 +122,9 @@ class Particle {
   }
   
   PVector influence(Particle p) {
+    if(p == this) {
+      return new PVector(0,0);
+    }
     PVector res = new PVector(pos.x-p.pos.x,pos.y-p.pos.y);
     res.setMag(forcemult*gconst*mass*p.mass/max(square(pos.dist(p.pos)),maxdist));
     return res;
