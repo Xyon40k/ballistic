@@ -6,7 +6,11 @@ class GravCenter {
   GravCenter(float x, float y, float mass) {
     pos = new PVector(x,y);
     this.mass = mass;
-    c = #0000E0;
+    if(mass > 0) {
+      c = #0000E0;
+    } else {
+      c = #E0E000;
+    }
   }
   
   GravCenter(float x, float y, float mass, color c) {
@@ -27,6 +31,6 @@ class GravCenter {
   }
   
   void update() {
-    
+    ;
   }
 }
