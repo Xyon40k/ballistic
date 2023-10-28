@@ -7,7 +7,7 @@ float gconst = 6.67428;
 float gsizemult = 0.5;  // Moltiplicatori di grandezza
 float psizemult = 1;
 boolean bounded = true;  // Muri anelastici sul bordo
-float frictionmult = 1;  // Sempre >= 1
+float frictionmult = 1.00;  // Sempre >= 1
 float maxdist = 400;  // Limitatore di (raggio^2)
 float traildecay = 1;  // Persistenza delle scie
 boolean trails = true;  // Esistenza delle scie
