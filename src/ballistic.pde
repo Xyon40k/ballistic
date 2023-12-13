@@ -17,6 +17,7 @@ boolean coinfluence = false;  // Attrattività tra particelle
 int mode = 0;
 int modes = 3;
 String[] modenames = {"Particle", "Center of gravity", "Particle Bulk"};
+String[] paramnames = {"Mass", "Friction", "Force", "Bulk spread", "Bulk quantity"};
 boolean tooltip = false;
 int quantity = 10;
 float spread = 10;
@@ -29,6 +30,7 @@ PopUp shifttexty;
 boolean paused = false;
 int currparam = 0;
 int params = 5;
+float displayvalue;
 
 Wrapper wdefaultmass;
 Wrapper wmode;
@@ -162,7 +164,8 @@ void keyPressed() {
       break;
       
       case 'a':
-      currparam = currparam+1 % params;
+      currparam++;
+      currparam = currparam % params;
       break;
     }
   }
@@ -179,12 +182,10 @@ void setup() {
   tiptext = new Text("Click:  Places an object of mode type at the mouse cursor\nMouse wheel:  Changes the currently selected parameter\nC:  Clear all objects of mode type\nJ:  Toggles attraction between particles\nB:  Toggles screen boundary for particles\nM:  Toggles a gravity center of selected mass at the mouse cursor\nS:  Cycles between modes\nT:  Toggles trails for particles\nP:  Pauses the simulation\nA:  Cycles between parameters to change", new PVector(0, -height*0.4), new PVector(CENTER, TOP));
   shifttexty = new PopUp("SHIFT is now active", new PVector(width*0.5, -height*0.5+textsize), fps*2, new PVector(RIGHT, TOP));
   shifttextn = new PopUp("SHIFT is now inactive", new PVector(width*0.5, -height*0.5+textsize), fps*2, new PVector(RIGHT, TOP));
-  tb.addText("Press Q for tooltips", new PVector(-width*0.5, -height*0.5+textsize), new PVector(LEFT, TOP));
   
   // wrappers
   wdefaultmass = new Wrapper(defaultmass);  //TODO: change text based on chosen parameter
   wmode = new Wrapper(mode);
-  tb.addDynamicText("Mass: %d", new PVector(-width*0.5,-height*0.5), wdefaultmass, new PVector(LEFT, TOP));
   tb.addDynamicText("Mode: %d", new PVector(width*0.5,-height*0.5), wmode, new PVector(RIGHT, TOP));
 }
 
@@ -196,7 +197,33 @@ void draw() {
   fill(#FFFFFF);
   ps.display();
   tb.display();
+  fill(#FFFFFF);
+
+  switch(currparam) {
+    case 0:
+    displayvalue = defaultmass;
+    break;
     
+    case 1:
+    displayvalue = frictionmult;
+    break;
+    
+    case 2:
+    displayvalue = forcemult;
+    break;
+    
+    case 3:
+    displayvalue = spread;
+    break;
+    
+    case 4:
+    displayvalue = quantity;
+    break;
+  }
+  textAlign(LEFT, TOP);
+  text(paramnames[currparam]+": "+displayvalue, -width*0.5, -height*0.5);
+  text("Press Q for tooltips", -width*0.5, -height*0.5+textsize);
+  
   // updating
   if(!paused) {
     wdefaultmass.set(floor(defaultmass*10)/10.0);
